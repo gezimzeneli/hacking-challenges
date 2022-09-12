@@ -1,10 +1,10 @@
-package simulation;
+package ch.zuehlke.hacking.simulation;
 
+import ch.zuehlke.hacking.model.BuildingInformation;
+import ch.zuehlke.hacking.model.InputData;
+import ch.zuehlke.hacking.model.TransactionCommand;
+import ch.zuehlke.hacking.model.YearEntry;
 import lombok.AllArgsConstructor;
-import model.BuildingInformation;
-import model.InputData;
-import model.TransactionCommand;
-import model.YearEntry;
 
 import java.math.BigDecimal;
 import java.util.Map;

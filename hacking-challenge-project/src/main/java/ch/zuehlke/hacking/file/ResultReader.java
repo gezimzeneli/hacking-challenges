@@ -1,6 +1,6 @@
-package file;
+package ch.zuehlke.hacking.file;
 
-import model.YearEntry;
+import ch.zuehlke.hacking.model.YearEntry;
 
 import java.io.IOException;
 import java.util.List;

@@ -1,4 +1,4 @@
-package file;
+package ch.zuehlke.hacking.file;
 
 import com.google.common.base.Strings;
 

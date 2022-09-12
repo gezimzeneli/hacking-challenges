@@ -1,6 +1,7 @@
 package file;
 
-import model.YearEntry;
+import ch.zuehlke.hacking.file.ResultReader;
+import ch.zuehlke.hacking.model.YearEntry;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package file;
+package ch.zuehlke.hacking.file;
 
 import java.io.IOException;
 import java.nio.file.Files;

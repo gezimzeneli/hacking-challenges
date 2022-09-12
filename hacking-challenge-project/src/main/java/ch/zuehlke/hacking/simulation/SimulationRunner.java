@@ -1,8 +1,8 @@
-package simulation;
+package ch.zuehlke.hacking.simulation;
 
-import model.BuildingInformation;
-import model.InputData;
-import model.YearEntry;
+import ch.zuehlke.hacking.model.BuildingInformation;
+import ch.zuehlke.hacking.model.InputData;
+import ch.zuehlke.hacking.model.YearEntry;
 
 import java.math.BigDecimal;
 import java.util.List;

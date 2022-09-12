@@ -1,8 +1,8 @@
-package file;
+package ch.zuehlke.hacking.file;
 
-import model.TransactionCommand;
-import model.TransactionCommandType;
-import model.YearEntry;
+import ch.zuehlke.hacking.model.TransactionCommand;
+import ch.zuehlke.hacking.model.TransactionCommandType;
+import ch.zuehlke.hacking.model.YearEntry;
 
 import java.util.HashMap;
 import java.util.List;

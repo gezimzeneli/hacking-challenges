@@ -1,4 +1,4 @@
-package model;
+package ch.zuehlke.hacking.model;
 
 import lombok.Data;
 
