@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/hacking-challenge-project/hacking-challenge2022.iml" filepath="$PROJECT_DIR$/hacking-challenge-project/hacking-challenge2022.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/hacking-challenges.iml" filepath="$PROJECT_DIR$/.idea/hacking-challenges.iml" />
+    </modules>
+  </component>
+</project>

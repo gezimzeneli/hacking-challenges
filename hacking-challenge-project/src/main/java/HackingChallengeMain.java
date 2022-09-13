@@ -1,9 +1,9 @@
-import file.InputDataReader;
-import file.ResultReader;
-import model.InputData;
-import model.YearEntry;
-import output.ResultPrinter;
-import simulation.SimulationRunner;
+import ch.zuehlke.hacking.file.ResultReader;
+import ch.zuehlke.hacking.model.InputData;
+import ch.zuehlke.hacking.model.YearEntry;
+import ch.zuehlke.hacking.output.ResultPrinter;
+import ch.zuehlke.hacking.simulation.SimulationRunner;
+import ch.zuehlke.hacking.file.InputDataReader;
 
 import java.io.IOException;
 import java.math.BigDecimal;
