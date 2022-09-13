@@ -1,7 +1,9 @@
-package simulation;
+package ch.zuehlke.hacking.simulation;
 
-import model.BuildingInformation;
-import model.InputData;
+
+import ch.zuehlke.hacking.model.BuildingInformation;
+import ch.zuehlke.hacking.model.InputData;
+import ch.zuehlke.hacking.simulation.MortgagePayment;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;

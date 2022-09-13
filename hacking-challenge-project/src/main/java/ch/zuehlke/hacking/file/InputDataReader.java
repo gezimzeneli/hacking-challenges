@@ -1,7 +1,8 @@
-package file;
+package ch.zuehlke.hacking.file;
 
-import model.BuildingInformation;
-import model.InputData;
+
+import ch.zuehlke.hacking.model.BuildingInformation;
+import ch.zuehlke.hacking.model.InputData;
 
 import java.io.IOException;
 import java.math.BigDecimal;

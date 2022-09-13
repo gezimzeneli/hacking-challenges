@@ -1,6 +1,6 @@
-package simulation;
+package ch.zuehlke.hacking.simulation;
 
-import model.*;
+import ch.zuehlke.hacking.model.*;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -9,38 +9,34 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class SimulationCommandProcessorTest_Buy {
+class SimulationCommandProcessorTest_Sell {
 
     @Test
-    void test_buy_1() {
-        List<TransactionCommand> commands = getTransactionCommand(TransactionCommandType.KAUFE);
-        commands.get(0).setHypoVolumeInPercent(0);
-        YearEntry yearEntry = getYearEntry(commands);
+    void test_sell_1() {
+        YearEntry yearEntry = getYearEntry(getTransactionCommand(TransactionCommandType.VERKAUFE));
         Map<Integer, YearEntry> commandsMap = new HashMap<>();
         commandsMap.put(yearEntry.getYear(), yearEntry);
-        InputData inputData = getInputData();
+        InputData inputData = getInputData(0);
 
         SimulationCommandProcessor commandProcessor = new SimulationCommandProcessor(commandsMap, inputData, BigDecimal.valueOf(1000), 3);
         BigDecimal balance = commandProcessor.run();
 
-        assertTrue(BigDecimal.valueOf(902).compareTo(balance) == 0);
+        assertTrue(BigDecimal.valueOf(1098).compareTo(balance) == 0);
     }
 
     @Test
     void test_buy_2() {
-        List<TransactionCommand> commands = getTransactionCommand(TransactionCommandType.KAUFE);
-        commands.get(0).setHypoVolumeInPercent(30);
-        YearEntry yearEntry = getYearEntry(commands);
+        YearEntry yearEntry = getYearEntry(getTransactionCommand(TransactionCommandType.VERKAUFE));
         Map<Integer, YearEntry> commandsMap = new HashMap<>();
         commandsMap.put(yearEntry.getYear(), yearEntry);
-        InputData inputData = getInputData();
+        InputData inputData = getInputData(30);
 
         SimulationCommandProcessor commandProcessor = new SimulationCommandProcessor(commandsMap, inputData, BigDecimal.valueOf(1000), 3);
         BigDecimal balance = commandProcessor.run();
 
-        assertTrue(BigDecimal.valueOf(931.4).compareTo(balance) == 0);
+        assertTrue(BigDecimal.valueOf(1066.5).compareTo(balance) == 0);
     }
 
     private List<TransactionCommand> getTransactionCommand(TransactionCommandType type) {
@@ -58,7 +54,7 @@ class SimulationCommandProcessorTest_Buy {
         return new YearEntry(3, transactionCommands);
     }
 
-    private InputData getInputData() {
+    private InputData getInputData(int mortgagePartPercentage) {
         Map<String, BuildingInformation> buildings = new HashMap<>();
 
         BuildingInformation building = new BuildingInformation();
@@ -66,9 +62,9 @@ class SimulationCommandProcessorTest_Buy {
         building.setYearBuilt(0);
         building.setYearDestroyed(7);
         building.setYieldProperty(false);
-        building.setAnnualPrices(new Double[]{100.0, 105.0, 101.0, 98.0});
+        building.setAnnualPrices(new Double[]{100.0, 105.0, 101.0, 98.0, 110.0});
+        building.setMortgagePartPercentage(mortgagePartPercentage);
         building.setInPossession(true);
-        building.setMortgagePartPercentage(30);
         building.setPurchasePrice(BigDecimal.valueOf(105));
 
         buildings.put(building.getIdentifier(), building);

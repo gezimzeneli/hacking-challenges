@@ -1,4 +1,4 @@
-package file;
+package ch.zuehlke.hacking.file;
 
 import ch.zuehlke.hacking.file.ResultReader;
 import ch.zuehlke.hacking.model.YearEntry;

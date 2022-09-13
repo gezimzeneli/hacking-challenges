@@ -1,6 +1,6 @@
-package simulation;
+package ch.zuehlke.hacking.simulation;
 
-import model.*;
+import ch.zuehlke.hacking.model.*;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -9,48 +9,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-class SimulationCommandProcessorTest_Renovate {
-
-    @Test
-    void test_renovate_1() {
-        List<TransactionCommand> commands = getTransactionCommand(TransactionCommandType.RENOVIERE);
-        commands.get(0).setHypoVolumeInPercent(0);
-        YearEntry yearEntry = getYearEntry(commands);
-        Map<Integer, YearEntry> commandsMap = new HashMap<>();
-        commandsMap.put(yearEntry.getYear(), yearEntry);
-        InputData inputData = getInputData();
-        inputData.getBuildings().get("Building1").setYearBuilt(2);
-
-        SimulationCommandProcessor commandProcessor = new SimulationCommandProcessor(commandsMap, inputData, BigDecimal.valueOf(1000), 3);
-
-        Exception exception = assertThrows(IllegalStateException.class, () -> {
-            commandProcessor.run();
-        });
-
-        assertTrue(exception.getMessage().contains("darf noch nicht im Jahr"));
-    }
+class SimulationCommandProcessorTest_Buy {
 
     @Test
-    void test_renovate_2() {
-        List<TransactionCommand> commands = getTransactionCommand(TransactionCommandType.RENOVIERE);
-        commands.get(0).setHypoVolumeInPercent(0);
-        YearEntry yearEntry = getYearEntry(commands);
-        Map<Integer, YearEntry> commandsMap = new HashMap<>();
-        commandsMap.put(yearEntry.getYear(), yearEntry);
-        InputData inputData = getInputData();
-
-        SimulationCommandProcessor commandProcessor = new SimulationCommandProcessor(commandsMap, inputData, BigDecimal.ONE, 3);
-        BigDecimal balance = commandProcessor.run();
-
-        assertTrue(balance.compareTo(BigDecimal.ONE) == 0);
-    }
-
-    @Test
-    void test_renovate_3() {
-        List<TransactionCommand> commands = getTransactionCommand(TransactionCommandType.RENOVIERE);
+    void test_buy_1() {
+        List<TransactionCommand> commands = getTransactionCommand(TransactionCommandType.KAUFE);
         commands.get(0).setHypoVolumeInPercent(0);
         YearEntry yearEntry = getYearEntry(commands);
         Map<Integer, YearEntry> commandsMap = new HashMap<>();
@@ -60,9 +25,23 @@ class SimulationCommandProcessorTest_Renovate {
         SimulationCommandProcessor commandProcessor = new SimulationCommandProcessor(commandsMap, inputData, BigDecimal.valueOf(1000), 3);
         BigDecimal balance = commandProcessor.run();
 
-        assertTrue(balance.compareTo(BigDecimal.valueOf(975.5)) == 0);
+        assertTrue(BigDecimal.valueOf(902).compareTo(balance) == 0);
     }
 
+    @Test
+    void test_buy_2() {
+        List<TransactionCommand> commands = getTransactionCommand(TransactionCommandType.KAUFE);
+        commands.get(0).setHypoVolumeInPercent(30);
+        YearEntry yearEntry = getYearEntry(commands);
+        Map<Integer, YearEntry> commandsMap = new HashMap<>();
+        commandsMap.put(yearEntry.getYear(), yearEntry);
+        InputData inputData = getInputData();
+
+        SimulationCommandProcessor commandProcessor = new SimulationCommandProcessor(commandsMap, inputData, BigDecimal.valueOf(1000), 3);
+        BigDecimal balance = commandProcessor.run();
+
+        assertTrue(BigDecimal.valueOf(931.4).compareTo(balance) == 0);
+    }
 
     private List<TransactionCommand> getTransactionCommand(TransactionCommandType type) {
         TransactionCommand command = new TransactionCommand(
@@ -88,7 +67,7 @@ class SimulationCommandProcessorTest_Renovate {
         building.setYearDestroyed(7);
         building.setYieldProperty(false);
         building.setAnnualPrices(new Double[]{100.0, 105.0, 101.0, 98.0});
-        building.setInPossession(true);
+        building.setInPossession(false);
         building.setMortgagePartPercentage(30);
         building.setPurchasePrice(BigDecimal.valueOf(105));
 

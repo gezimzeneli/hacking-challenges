@@ -1,6 +1,6 @@
-package simulation;
+package ch.zuehlke.hacking.simulation;
 
-import model.*;
+import ch.zuehlke.hacking.model.*;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -9,35 +9,60 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class SimulationCommandProcessorTest_Sell {
+class SimulationCommandProcessorTest_Renovate {
 
     @Test
-    void test_sell_1() {
-        YearEntry yearEntry = getYearEntry(getTransactionCommand(TransactionCommandType.VERKAUFE));
+    void test_renovate_1() {
+        List<TransactionCommand> commands = getTransactionCommand(TransactionCommandType.RENOVIERE);
+        commands.get(0).setHypoVolumeInPercent(0);
+        YearEntry yearEntry = getYearEntry(commands);
         Map<Integer, YearEntry> commandsMap = new HashMap<>();
         commandsMap.put(yearEntry.getYear(), yearEntry);
-        InputData inputData = getInputData(0);
+        InputData inputData = getInputData();
+        inputData.getBuildings().get("Building1").setYearBuilt(2);
+
+        SimulationCommandProcessor commandProcessor = new SimulationCommandProcessor(commandsMap, inputData, BigDecimal.valueOf(1000), 3);
+
+        Exception exception = assertThrows(IllegalStateException.class, () -> {
+            commandProcessor.run();
+        });
+
+        assertTrue(exception.getMessage().contains("darf noch nicht im Jahr"));
+    }
+
+    @Test
+    void test_renovate_2() {
+        List<TransactionCommand> commands = getTransactionCommand(TransactionCommandType.RENOVIERE);
+        commands.get(0).setHypoVolumeInPercent(0);
+        YearEntry yearEntry = getYearEntry(commands);
+        Map<Integer, YearEntry> commandsMap = new HashMap<>();
+        commandsMap.put(yearEntry.getYear(), yearEntry);
+        InputData inputData = getInputData();
+
+        SimulationCommandProcessor commandProcessor = new SimulationCommandProcessor(commandsMap, inputData, BigDecimal.ONE, 3);
+        BigDecimal balance = commandProcessor.run();
+
+        assertTrue(balance.compareTo(BigDecimal.ONE) == 0);
+    }
+
+    @Test
+    void test_renovate_3() {
+        List<TransactionCommand> commands = getTransactionCommand(TransactionCommandType.RENOVIERE);
+        commands.get(0).setHypoVolumeInPercent(0);
+        YearEntry yearEntry = getYearEntry(commands);
+        Map<Integer, YearEntry> commandsMap = new HashMap<>();
+        commandsMap.put(yearEntry.getYear(), yearEntry);
+        InputData inputData = getInputData();
 
         SimulationCommandProcessor commandProcessor = new SimulationCommandProcessor(commandsMap, inputData, BigDecimal.valueOf(1000), 3);
         BigDecimal balance = commandProcessor.run();
 
-        assertTrue(BigDecimal.valueOf(1098).compareTo(balance) == 0);
+        assertTrue(balance.compareTo(BigDecimal.valueOf(975.5)) == 0);
     }
 
-    @Test
-    void test_buy_2() {
-        YearEntry yearEntry = getYearEntry(getTransactionCommand(TransactionCommandType.VERKAUFE));
-        Map<Integer, YearEntry> commandsMap = new HashMap<>();
-        commandsMap.put(yearEntry.getYear(), yearEntry);
-        InputData inputData = getInputData(30);
-
-        SimulationCommandProcessor commandProcessor = new SimulationCommandProcessor(commandsMap, inputData, BigDecimal.valueOf(1000), 3);
-        BigDecimal balance = commandProcessor.run();
-
-        assertTrue(BigDecimal.valueOf(1066.5).compareTo(balance) == 0);
-    }
 
     private List<TransactionCommand> getTransactionCommand(TransactionCommandType type) {
         TransactionCommand command = new TransactionCommand(
@@ -54,7 +79,7 @@ class SimulationCommandProcessorTest_Sell {
         return new YearEntry(3, transactionCommands);
     }
 
-    private InputData getInputData(int mortgagePartPercentage) {
+    private InputData getInputData() {
         Map<String, BuildingInformation> buildings = new HashMap<>();
 
         BuildingInformation building = new BuildingInformation();
@@ -62,9 +87,9 @@ class SimulationCommandProcessorTest_Sell {
         building.setYearBuilt(0);
         building.setYearDestroyed(7);
         building.setYieldProperty(false);
-        building.setAnnualPrices(new Double[]{100.0, 105.0, 101.0, 98.0, 110.0});
-        building.setMortgagePartPercentage(mortgagePartPercentage);
+        building.setAnnualPrices(new Double[]{100.0, 105.0, 101.0, 98.0});
         building.setInPossession(true);
+        building.setMortgagePartPercentage(30);
         building.setPurchasePrice(BigDecimal.valueOf(105));
 
         buildings.put(building.getIdentifier(), building);
