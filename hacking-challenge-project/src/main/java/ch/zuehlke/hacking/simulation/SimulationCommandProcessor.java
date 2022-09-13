@@ -40,14 +40,22 @@ class SimulationCommandProcessor {
     private void buyBuilding(int year, TransactionCommand command) {
         BuildingInformation building = input.getBuildings().get(command.getBuildingID());
 
-        // TODO Hypothek einbauen
-
-        if (balance.compareTo(building.getPrice(year)) >= 0) {
-            throw new IllegalStateException("Nicht genug Geld um das Gebäude " + building.getIdentifier() + " zu kaufen!");
+        if (building.isInPossession()) {
+            throw new IllegalStateException("Du kannst das Gebäude " + building.getIdentifier() + " nicht verkaufen, du besitzt es schon.");
         }
 
-        balance = balance.subtract(building.getPrice(year));
+        if (balance.compareTo(building.getPrice(year)) <= 0) {
+            return;
+        }
+
+        BigDecimal priceInclHypo = BigDecimal.valueOf(100 - command.getHypoVolumeInPercent())
+                .multiply(building.getPrice(year))
+                .divide(BigDecimal.valueOf(100));
+        balance = balance.subtract(priceInclHypo);
+
         building.setInPossession(true);
+        building.setMortgagePartPercentage(command.getHypoVolumeInPercent());
+        building.setPurchasePrice(building.getPrice(year));
     }
 
     private void sellBuilding(int year, TransactionCommand command) {
@@ -57,17 +65,35 @@ class SimulationCommandProcessor {
             throw new IllegalStateException("Du kannst das Gebäude " + building.getIdentifier() + " nicht verkaufen ohne es vorher gekauft zu haben.");
         }
 
-        balance = balance.add(building.getPrice(year));
+        BigDecimal moneyYouAreGettingBack = building.getPrice(year);
+
+        if (building.getMortgagePartPercentage() > 0) {
+            BigDecimal hypo = building.getPurchasePrice()
+                    .multiply(BigDecimal.valueOf(building.getMortgagePartPercentage()))
+                    .divide(BigDecimal.valueOf(100));
+            moneyYouAreGettingBack = moneyYouAreGettingBack.subtract(hypo);
+        }
+
+        balance = balance.add(moneyYouAreGettingBack);
         building.setInPossession(false);
+        building.setMortgagePartPercentage(0);
+        building.setPurchasePrice(BigDecimal.ZERO);
     }
 
     private void renovateBuilding(int year, TransactionCommand command) {
         BuildingInformation building = input.getBuildings().get(command.getBuildingID());
 
-        if (!(building.getYearBuilt() + 20 > year) && !(building.getYearBuilt() == 0)) {
+        if (year < building.getYearBuilt() + 20 && building.getYearBuilt() != 0) {
             throw new IllegalStateException("Das Gebäude " + building.getIdentifier() + " darf noch nicht im Jahr " + year + " renoviert werden!");
         }
 
-        // TODO Renoviere Gebäude
+        BigDecimal renovationCost = building.getPrice(year).multiply(BigDecimal.valueOf(0.25));
+
+        if (renovationCost.compareTo(balance) > 0) {
+            return;
+        }
+
+        balance = balance.subtract(renovationCost);
+        building.renovate(year);
     }
 }

@@ -56,7 +56,11 @@ class InputFileValidator {
         }
 
         try {
-            Integer.parseInt(commandParts[2]);
+            int hypoVolume = Integer.parseInt(commandParts[2]);
+
+            if (hypoVolume < 0 || hypoVolume > 50) {
+                throw new IllegalStateException("Das Hypothekarvolumen der Operation \"" + String.join(" ", commandParts) + "\" ist ausserhalb des Range (0-50)!");
+            }
         } catch (Exception ex) {
             throw new IllegalStateException("Die Operation \"" + String.join(" ", commandParts) + "\" hat das falsche Format beim letzten Attribut! Erwartet wird ein Integer.");
         }

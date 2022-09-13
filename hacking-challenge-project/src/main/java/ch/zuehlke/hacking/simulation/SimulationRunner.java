@@ -1,10 +1,10 @@
-package ch.zuehlke.hacking.simulation;
+package simulation;
 
-import ch.zuehlke.hacking.model.BuildingInformation;
-import ch.zuehlke.hacking.model.InputData;
-import ch.zuehlke.hacking.model.YearEntry;
+import model.InputData;
+import model.YearEntry;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -15,6 +15,7 @@ public class SimulationRunner {
     private Map<Integer, YearEntry> operations;
     private InputData input;
 
+    private List<BigDecimal> balanceOverYears = new ArrayList<>();
     private BigDecimal balance;
 
     public SimulationRunner(Map<Integer, YearEntry> operations, InputData input) {
@@ -23,12 +24,12 @@ public class SimulationRunner {
         balance = input.getInitialBalance();
     }
 
-
-    public void run() {
+    public BigDecimal run() {
         int year = 0;
 
         while (areBuildingsAvailable(year)) {
-            collectRent(year);
+            RentCollector rentCollector = new RentCollector(input, balance, year);
+            balance = rentCollector.collect();
 
             MortgagePayment payment = new MortgagePayment(input,balance, year);
             balance = payment.pay();
@@ -38,8 +39,11 @@ public class SimulationRunner {
                 balance = simulationCommandProcessor.run();
             }
 
+            balanceOverYears.add(balance);
             year++;
         }
+
+        return balance;
     }
 
     private boolean areBuildingsAvailable(int year) {
@@ -48,24 +52,5 @@ public class SimulationRunner {
                 .filter(building -> year >= building.getYearBuilt() && year <= building.getYearDestroyed())
                 .collect(Collectors.toList())
                 .isEmpty();
-    }
-
-    private void collectRent(int year) {
-        List<BuildingInformation> possessedYieldProperties = input.getBuildings()
-                .values()
-                .stream()
-                .filter(building -> building.isYieldProperty())
-                .filter(building -> building.isInPossession())
-                .collect(Collectors.toList());
-
-        for (BuildingInformation building : possessedYieldProperties) {
-            BigDecimal rentIncomePercentage = BigDecimal.valueOf(getMieteinnahmen(year));
-            BigDecimal incomeOfBuilding = building.getPrice(year).multiply(rentIncomePercentage);
-            balance = balance.add(incomeOfBuilding);
-        }
-    }
-
-    public static double getMieteinnahmen(int year) {
-        return Math.sin(0.2*year-42) + Math.sin(0.9*year) + Math.sin(0.01*year) + 3.1;
     }
 }
