@@ -1,5 +1,6 @@
 package ch.zuehlke.hacking.service;
 
+import ch.zuehlke.hacking.dto.ScoreDto;
 import ch.zuehlke.hacking.file.InputDataReaderS3;
 import ch.zuehlke.hacking.file.InputFileValidator;
 import ch.zuehlke.hacking.file.OutputDataMapper;
@@ -19,10 +20,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 
 // Nicest Code ever, I know. please don't judge me
@@ -188,4 +188,25 @@ public class ScoreService {
     }
 
 
+    public List<ScoreDto> getScores() {
+        Iterable<PersonScore> personScores = scoreRepository.findAll();
+        List<ScoreDto> scoreDtos = StreamSupport
+                .stream(personScores.spliterator(), false).map(personScore -> ScoreDto.builder()
+                        .name(personScore.getName())
+                        .scoreA(personScore.getScoreA())
+                        .scoreB(personScore.getScoreB())
+                        .scoreC(personScore.getScoreC())
+                        .scoreD(personScore.getScoreD())
+                        .scoreE(personScore.getScoreE())
+                        .totalScore(getTotalScore(personScore))
+                        .build())
+                .collect(Collectors.toList());
+
+        Collections.sort(scoreDtos);
+        return scoreDtos;
+    }
+
+    private int getTotalScore(PersonScore personScore) {
+        return personScore.getScoreA() + personScore.getScoreB() + personScore.getScoreC() + personScore.getScoreD() + personScore.getScoreE();
+    }
 }
