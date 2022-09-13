@@ -4,7 +4,7 @@ import com.google.common.base.Strings;
 
 import java.util.List;
 
-class InputFileValidator {
+public class InputFileValidator {
     public void validate(List<String> lines) {
         lines.stream().forEach(line -> {
             if (!isYear(line)) {
