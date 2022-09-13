@@ -17,14 +17,8 @@ class MortgagePayment {
 
 
     BigDecimal pay() {
-        List<BuildingInformation> possessedProperties = input.getBuildings()
-                .values()
-                .stream()
-                .filter(building -> building.isInPossession())
-                .filter(building -> building.getMortgagePartPercentage() > 0)
-                .collect(Collectors.toList());
+        List<BuildingInformation> possessedProperties = getBuildings();
 
-        // TODO Verifiziere
         for (BuildingInformation property : possessedProperties) {
             balance = balance.subtract(
                     property.getPurchasePrice()
@@ -36,7 +30,16 @@ class MortgagePayment {
         return balance;
     }
 
-    public static double getHypothek(int year) {
+    private List<BuildingInformation> getBuildings() {
+        return input.getBuildings()
+                .values()
+                .stream()
+                .filter(building -> building.isInPossession())
+                .filter(building -> building.getMortgagePartPercentage() > 0)
+                .collect(Collectors.toList());
+    }
+
+    public double getHypothek(int year) {
         return Math.sin(0.2 * year) + Math.sin(0.6 * year) + Math.sin(0.01 * year) + 3;
     }
 }
