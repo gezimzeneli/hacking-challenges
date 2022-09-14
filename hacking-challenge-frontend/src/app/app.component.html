@@ -6,7 +6,7 @@
 <div *ngIf="uploadedScore >= 0 && !loading">Uploaded Score: {{uploadedScore}}</div>
 <div *ngIf="errorMessage" style="color: red">{{errorMessage}}</div>
 
-<table>
+<table *ngIf="scores.length">
   <tr>
     <th>Name</th>
     <th>Score Total</th>

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Score} from "./Score";
+import {ScoreResult} from "./ScoreResult";
 
 @Injectable({
   providedIn: 'root'
@@ -20,14 +21,14 @@ export class ScoreService {
     return this.httpClient.get<Score[]>(this.path + '/scores')
   }
 
-  public uploadOutputFiles(files :File[], name: string) :Observable<number> {
+  public uploadOutputFiles(files :File[], name: string) :Observable<ScoreResult> {
     const formData = new FormData();
     for (var i = 0; i < files.length; i++) {
       formData.append("files", files[i]);
     }
     formData.append('name' , name)
     formData.append('score', '0')
-    return this.httpClient.post<number>(this.path + '/uploadFiles', formData);
+    return this.httpClient.post<ScoreResult>(this.path + '/uploadFiles', formData);
   }
 
 
