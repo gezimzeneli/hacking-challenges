@@ -14,7 +14,7 @@ export class ScoreService {
   path:string='';
 
   constructor(private httpClient: HttpClient) {
-    this.path = this.localPath;
+    this.path = this.remotePath;
   }
 
   public getScores() : Observable<Score[]>{

@@ -39,7 +39,9 @@ export class AppComponent implements OnInit{
 
   submit(){
     if (this.name && this.myFiles.length){
+      localStorage.setItem("name", this.name);
       this.loading = true;
+      this.errorMessage = "";
       this.scoreService.uploadOutputFiles(this.myFiles, this.name)
         .pipe(
           catchError(err => {
@@ -52,6 +54,7 @@ export class AppComponent implements OnInit{
           console.log(scoreResult);
           this.loading = false;
           this.uploadedScore = scoreResult.score;
+          localStorage.setItem("lastResult", scoreResult.score.toString());
           this.errorMessage = scoreResult.errorMessage;
           this.loadScores();
         })
@@ -60,6 +63,14 @@ export class AppComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    let item = localStorage.getItem("name");
+    if (item){
+      this.name = item;
+    }
+    item = localStorage.getItem("lastResult");
+    if (item){
+      this.uploadedScore = +item;
+    }
     this.loadScores();
   }
 

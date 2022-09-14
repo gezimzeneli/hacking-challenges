@@ -3,7 +3,7 @@
 <button (click)="submit()" style="margin-left: 20px">Submit</button>
 
 <div *ngIf="loading">Upload in process. Please wait. (It can take up to 30 seconds per file)</div>
-<div *ngIf="uploadedScore >= 0 && !loading">Uploaded Score: {{uploadedScore}}</div>
+<div *ngIf="uploadedScore >= 0 && !loading">Latest uploaded Score: {{uploadedScore}}</div>
 <div *ngIf="errorMessage" style="color: red">{{errorMessage}}</div>
 
 <table *ngIf="scores.length">
