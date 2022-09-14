@@ -29,7 +29,9 @@ public class InputDataReaderS3 {
 
     private List<String> getLines(String filename) throws IOException {
 
+        System.out.println("loading from S3: " + filename);
         URL u = new URL("https://hacking-challenge-inputdata.s3.amazonaws.com/" + filename);
+        System.out.println("loading from S3 done");
         InputStream inputStream = u.openStream();
         List<String> lines = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8)).lines().collect(Collectors.toList());
         return lines;

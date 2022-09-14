@@ -77,7 +77,7 @@ public class ScoreService {
     private String validateFileName(MultipartFile file) {
         String fileName = file.getOriginalFilename();
         if (!fileName.startsWith("output") || !fileName.endsWith(".txt")) {
-            throw new RuntimeException("invalid file");
+            throw new IllegalStateException("invalid file");
         }
         String task = fileName.substring(fileName.length() - 5, fileName.length() - 4);
         switch (task) {
@@ -88,7 +88,7 @@ public class ScoreService {
             case "E":
                 return task;
             default:
-                throw new RuntimeException("invalid file");
+                throw new IllegalStateException("invalid file");
         }
     }
 
@@ -125,7 +125,7 @@ public class ScoreService {
                     personScore= new PersonScore(null,name, 0, 0, 0, 0, score);
                     break;
                 default:
-                    throw new RuntimeException("invalid task");
+                    throw new IllegalStateException("invalid task number");
             }
             scoreRepository.save(personScore);
 
@@ -149,7 +149,7 @@ public class ScoreService {
                     checkScoreE(personScore, score);
                     break;
                 default:
-                    throw new RuntimeException("invalid task");
+                    throw new IllegalStateException("invalid task number");
             }
             scoreRepository.save(personScore);
         }

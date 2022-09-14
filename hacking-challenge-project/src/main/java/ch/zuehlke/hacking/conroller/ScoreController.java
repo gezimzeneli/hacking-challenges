@@ -1,6 +1,7 @@
 package ch.zuehlke.hacking.conroller;
 
 import ch.zuehlke.hacking.dto.ScoreDto;
+import ch.zuehlke.hacking.dto.ScoreResult;
 import ch.zuehlke.hacking.model.PersonScore;
 import ch.zuehlke.hacking.service.ScoreService;
 import lombok.AllArgsConstructor;
@@ -20,12 +21,18 @@ public class ScoreController {
     final ScoreService scoreService;
 
     @PostMapping(path ="uploadFiles", headers = "content-type=multipart/*")
-    public ResponseEntity<Integer> uploadFiles(@RequestParam("files") MultipartFile[] files, @RequestParam("name") String name, @RequestParam("score") int score) throws IOException {
+    public ResponseEntity<ScoreResult> uploadFiles(@RequestParam("files") MultipartFile[] files, @RequestParam("name") String name, @RequestParam("score") int score) throws IOException {
 
-        int scoreResult = scoreService.calculateScoreForMultipleFiles(files, name, score);
-
-        return ResponseEntity.ok(scoreResult);
-
+        int scoreResult = 0;
+        try {
+            scoreResult = scoreService.calculateScoreForMultipleFiles(files, name, score);
+        } catch (IllegalStateException ex){
+            ex.getMessage();
+            return ResponseEntity.ok(new ScoreResult(-1, ex.getMessage()));
+        } catch (Exception ex) {
+            return ResponseEntity.ok(new ScoreResult(-1, ex.getMessage()));
+        }
+        return ResponseEntity.ok(new ScoreResult(scoreResult, ""));
     }
 
     @GetMapping("/")
