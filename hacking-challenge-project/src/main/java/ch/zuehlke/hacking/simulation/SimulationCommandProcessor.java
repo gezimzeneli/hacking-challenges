@@ -87,6 +87,10 @@ class SimulationCommandProcessor {
             throw new IllegalStateException("Das Gebäude " + building.getIdentifier() + " darf noch nicht im Jahr " + year + " renoviert werden!");
         }
 
+        if (building.getNumberOfRenovations() >= 3) {
+            throw new IllegalStateException("Das Gebäude " + building.getIdentifier() + " wurde bereits zu oft renoviert!");
+        }
+
         BigDecimal renovationCost = building.getPrice(year).multiply(BigDecimal.valueOf(0.25));
 
         if (renovationCost.compareTo(balance) > 0) {

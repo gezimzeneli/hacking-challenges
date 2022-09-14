@@ -15,7 +15,6 @@ public class SimulationRunner {
     private Map<Integer, YearEntry> operations;
     private InputData input;
 
-    private List<BigDecimal> balanceOverYears = new ArrayList<>();
     private BigDecimal balance;
 
     public SimulationRunner(Map<Integer, YearEntry> operations, InputData input) {
@@ -31,7 +30,7 @@ public class SimulationRunner {
             RentCollector rentCollector = new RentCollector(input, balance, year);
             balance = rentCollector.collect();
 
-            MortgagePayment payment = new MortgagePayment(input,balance, year);
+            MortgagePayment payment = new MortgagePayment(input, balance, year);
             balance = payment.pay();
 
             if (operations.containsKey(year)) {
@@ -39,7 +38,6 @@ public class SimulationRunner {
                 balance = simulationCommandProcessor.run();
             }
 
-            balanceOverYears.add(balance);
             year++;
         }
 

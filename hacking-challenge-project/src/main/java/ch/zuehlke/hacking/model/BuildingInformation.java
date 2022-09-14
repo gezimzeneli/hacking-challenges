@@ -11,6 +11,7 @@ public class BuildingInformation {
     private int yearDestroyed;
     private boolean isYieldProperty;
     private Double[] annualPrices;
+    private int numberOfRenovations = 0;
 
     private boolean isInPossession = false;
     private int mortgagePartPercentage;
@@ -32,6 +33,7 @@ public class BuildingInformation {
 
     public void renovate(int year) {
         int priceIndex = year - yearBuilt;
+        this.numberOfRenovations++;
 
         for (int i = priceIndex; i < annualPrices.length; i++) {
             annualPrices[i] = annualPrices[i] * 1.2;

@@ -3,6 +3,7 @@ package ch.zuehlke.hacking.file;
 import ch.zuehlke.hacking.model.TransactionCommand;
 import ch.zuehlke.hacking.model.TransactionCommandType;
 import ch.zuehlke.hacking.model.YearEntry;
+import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +16,9 @@ public class OutputDataMapper {
         YearEntry entry = null;
 
         for (String line : lines) {
+            if (!StringUtils.hasLength(line))
+                continue;
+
             if (isYear(line)) {
                 int year = getYear(line);
                 entry = new YearEntry(year);

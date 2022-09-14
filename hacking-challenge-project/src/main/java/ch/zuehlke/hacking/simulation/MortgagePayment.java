@@ -20,8 +20,12 @@ class MortgagePayment {
         List<BuildingInformation> possessedProperties = getBuildings();
 
         for (BuildingInformation property : possessedProperties) {
+            BigDecimal hypoVolume = property.getPurchasePrice()
+                    .multiply(BigDecimal.valueOf(property.getMortgagePartPercentage()))
+                    .divide(BigDecimal.valueOf(100));
+
             balance = balance.subtract(
-                    property.getPurchasePrice()
+                    hypoVolume
                             .multiply(BigDecimal.valueOf(getHypothek(year)))
                             .divide(BigDecimal.valueOf(100))
             );
