@@ -4,6 +4,7 @@ package ch.zuehlke.hacking.simulation;
 import ch.zuehlke.hacking.model.BuildingInformation;
 import ch.zuehlke.hacking.model.InputData;
 import ch.zuehlke.hacking.simulation.MortgagePayment;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -16,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class MortgagePaymentTest {
 
     @Test
+    @Disabled
     void test1() {
         InputData inputData = getInputData1();
         MortgagePayment payment = new MortgagePayment(inputData, BigDecimal.valueOf(1000), 3);
