@@ -76,7 +76,7 @@ public class ScoreService {
 
     private String validateFileName(MultipartFile file) {
         String fileName = file.getOriginalFilename();
-        if (!fileName.startsWith("output") && !fileName.endsWith(".txt")) {
+        if (!fileName.startsWith("output") || !fileName.endsWith(".txt")) {
             throw new RuntimeException("invalid file");
         }
         String task = fileName.substring(fileName.length() - 5, fileName.length() - 4);
