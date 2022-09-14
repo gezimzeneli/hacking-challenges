@@ -1,0 +1,8 @@
+0
+KAUFE Baumstrasse4Zurich 0
+KAUFE Blumenstrasse12Romanshorn 40
+4
+VERKAUFE Baumstrasse4Zurich
+KAUFE Industriestrasse3Basel 30
+23
+RENOVIERE Industriestrasse3Basel

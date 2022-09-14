@@ -1,0 +1,28 @@
+<input type="file" class="file-upload" multiple (change)="onFileChange($event)">
+<input type="text" [(ngModel)]="name">
+<button (click)="submit()" style="margin-left: 20px">Submit</button>
+
+<div *ngIf="loading">Upload in process. Please wait. (It can take up to 30 seconds per file)</div>
+<div *ngIf="uploadedScore >= 0 && !loading">Uploaded Score: {{uploadedScore}}</div>
+<div *ngIf="errorMessage" style="color: red">{{errorMessage}}</div>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Score Total</th>
+    <th>Score File A</th>
+    <th>Score File B</th>
+    <th>Score File C</th>
+    <th>Score File D</th>
+    <th>Score File E</th>
+  </tr>
+  <tr *ngFor="let score of scores">
+    <td>{{score.name}}</td>
+    <td>{{score.totalScore}}</td>
+    <td>{{score.scoreA}}</td>
+    <td>{{score.scoreB}}</td>
+    <td>{{score.scoreC}}</td>
+    <td>{{score.scoreD}}</td>
+    <td>{{score.scoreE}}</td>
+  </tr>
+</table>
