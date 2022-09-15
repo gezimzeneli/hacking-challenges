@@ -44,7 +44,7 @@ class SimulationCommandProcessor {
             throw new IllegalStateException("Du kannst das Gebäude " + building.getIdentifier() + " nicht verkaufen, du besitzt es schon.");
         }
 
-        if (balance.compareTo(building.getPrice(year)) <= 0) {
+        if (balance.compareTo(building.getPrice(year)) < 0) {
             return;
         }
 

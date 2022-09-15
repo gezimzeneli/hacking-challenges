@@ -27,7 +27,6 @@ public class ScoreController {
         try {
             scoreResult = scoreService.calculateScoreForMultipleFiles(files, name);
         } catch (IllegalStateException ex){
-            ex.getMessage();
             return ResponseEntity.ok(new ScoreResult(-1, ex.getMessage()));
         } catch (Exception ex) {
             return ResponseEntity.ok(new ScoreResult(-1, ex.getMessage()));
