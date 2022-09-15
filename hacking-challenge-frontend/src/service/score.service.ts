@@ -27,7 +27,6 @@ export class ScoreService {
       formData.append("files", files[i]);
     }
     formData.append('name' , name)
-    formData.append('score', '0')
     return this.httpClient.post<ScoreResult>(this.path + '/uploadFiles', formData);
   }
 

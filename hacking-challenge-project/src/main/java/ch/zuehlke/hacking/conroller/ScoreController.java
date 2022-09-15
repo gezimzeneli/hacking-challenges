@@ -21,11 +21,11 @@ public class ScoreController {
     final ScoreService scoreService;
 
     @PostMapping(path ="uploadFiles", headers = "content-type=multipart/*")
-    public ResponseEntity<ScoreResult> uploadFiles(@RequestParam("files") MultipartFile[] files, @RequestParam("name") String name, @RequestParam("score") int score) throws IOException {
+    public ResponseEntity<ScoreResult> uploadFiles(@RequestParam("files") MultipartFile[] files, @RequestParam("name") String name) throws IOException {
 
         int scoreResult = 0;
         try {
-            scoreResult = scoreService.calculateScoreForMultipleFiles(files, name, score);
+            scoreResult = scoreService.calculateScoreForMultipleFiles(files, name);
         } catch (IllegalStateException ex){
             ex.getMessage();
             return ResponseEntity.ok(new ScoreResult(-1, ex.getMessage()));

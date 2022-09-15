@@ -32,7 +32,7 @@ public class ScoreService {
 
     ScoreRepository scoreRepository;
 
-    public int calculateScoreForMultipleFiles(MultipartFile[] files, String name, int score2) throws IOException {
+    public int calculateScoreForMultipleFiles(MultipartFile[] files, String name) throws IOException {
         System.out.println(name);
 
         int resultScore = 0;
@@ -52,12 +52,7 @@ public class ScoreService {
             ResultPrinter printer = new ResultPrinter();
             printer.print(score.intValue(), name);
 
-
-            if (score2 > 0){
-                storeScore(name, task, score2);
-            } else {
-                storeScore(name, task, score.intValue());
-            }
+            storeScore(name, task, score.intValue());
 
             resultScore+= score.intValue();
 
