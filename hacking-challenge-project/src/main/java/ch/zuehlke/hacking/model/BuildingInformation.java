@@ -24,7 +24,7 @@ public class BuildingInformation {
             throw new IllegalStateException("Das Gebäude " + identifier + " existiert im Jahr " + year + " nicht!");
         }
 
-        if (yearBuilt + yearDestroyed < year) {
+        if (yearBuilt + yearDestroyed <= year) {
             return BigDecimal.ZERO;
         }
 
